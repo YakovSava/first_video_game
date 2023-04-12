@@ -4,7 +4,7 @@ from cocos.director import director
 from cocos.scene import Scene
 from cocos.layer import ScrollingManager
 from plugins.sprites import npc_layer, MainHeroSprite, DirectedByRobertVeide
-from plugins.background import BackgroundLayer
+from plugins.background import BackgroundLayer, Button
 from plugins.sprites import keyboard
 
 class MainMenu(Menu):
