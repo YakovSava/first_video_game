@@ -1,28 +1,27 @@
-import cocos
-
 from cocos.director import director
-
-class HelloCocos(cocos.layer.Layer):
-
-    def __init__(self):
-        super().__init__()
-        label = cocos.text.Label(
-            "Hello cocos",
-            font_size=32,
-            anchor_x="center",
-            anchor_y="center"
-        )
-        label.position = 640, 360
-        self.add(label)
+from cocos.scene import Scene
+from cocos.layer import ScrollingManager
+from plugins.layers import all_layer
+from plugins.background import BackgroundLayer
+from plugins.sprites import keyboard
 
 if __name__ == "__main__":
     director.init(
         width=1280,
         height=720,
-        caption="My cocos window"
+        caption="Game name"
     )
+    director.window.pop_handlers()
+    director.window.push_handlers(keyboard)
+    scroller = ScrollingManager()
 
-    hello_layers = HelloCocos()
-    test_scene = cocos.scene.Scene(hello_layers)
+    for layer in all_layer:
+        scroller.add(layer)
 
-    director.run(test_scene)
+    for layer in (BackgroundLayer().layers):
+        scroller.add(layer)
+
+    scene = Scene()
+    scene.add(scroller)
+
+    director.run(scene)
