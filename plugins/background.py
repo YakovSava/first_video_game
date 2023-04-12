@@ -9,6 +9,7 @@ class BackgroundLayer(ScrollableLayer):
 
         background = load('source/map.tmx')
         self.layers = background['ground'], background['deco'], background['trees']
+        self.colliders = background['collide']
 
         self.add(background)
 
