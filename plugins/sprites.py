@@ -1,12 +1,12 @@
 from os import listdir
-from random import randint, choice
+from random import choice
 from typing import Callable
 from pyglet.window import key, mouse
 from cocos.director import director
 from cocos.layer import Layer, ColorLayer
 from cocos.text import Label
 from cocos.sprite import Sprite
-from cocos.action import Move
+from cocos.actions import Move, MoveTo
 from cocos.layer import ScrollingManager
 
 keyboard = key.KeyStateHandler()
@@ -55,8 +55,14 @@ class MainHeroSprite(Layer):
 
         self.add(self.spr)
 
+        self.sprite_action = MoveTo((0, 0), duration=5)
+
     def main_hero_click(self, x ,y) -> bool:
         return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.weight) and (y > self.spr.y)
+
+    def on_enter(self) -> None:
+        super().on_enter()
+        self.do(self.sprite_action)
 
     def on_mouse_press(self, x, y, button, modifier):
         if button & mouse.LEFT:
