@@ -1,4 +1,4 @@
-from pyglet.window import key
+from pyglet.window import key, mouse
 from cocos.layer import Layer
 from cocos.sprite import Sprite
 from cocos.action import Move
@@ -16,13 +16,23 @@ class Mover(Move):
 
 class MainHeroSprite(Layer):
 
+    is_event_handler = True
+
     def __init__(self):
         super().__init__()
-        spr = Sprite('source/gg.png')
+        self.spr = Sprite('source/gg.png')
 
-        spr.position = 400, 360
-        spr.velocity = 0, 0
+        self.spr.position = 400, 360
+        self.spr.velocity = 0, 0
 
-        spr.do(Mover())
+        self.spr.do(Mover())
 
-        self.add(spr)
+        self.add(self.spr)
+
+    def main_hero_click(self, x ,y) -> bool:
+        return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.weight) and (y > self.spr.y)
+
+    def on_mouse_press(self, x, y, button, modifier):
+        if button & mouse.LEFT:
+            if self.main_hero_click(x, y):
+                pass
