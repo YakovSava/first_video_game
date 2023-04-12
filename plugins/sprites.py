@@ -13,7 +13,7 @@ keyboard = key.KeyStateHandler()
 
 class Mover(Move):
 
-    def __init__(self, dt):
+    def step(self, dt):
         super().step(dt)
         vel_x = (keyboard[key.RIGHT] - keyboard[key.LEFT]) * 500
         vel_y = (keyboard[key.UP] - keyboard[key.DOWN]) * 500
@@ -85,41 +85,42 @@ class NPC(Layer):
     def on_mouse_press(self, x, y, button, modifier):
         if button & mouse.LEFT:
             if self.npc_click(x, y):
-                pass # Say random phrase
+                print('NPC click!')
 
 class DirectedByRobertVeide(ColorLayer):
+    _handlers_enabled = False
 
     def __init__(self):
         super().__init__(*[255 for _ in range(4)])
 
-        self.add_title('Credits', 300)
-        self.add_label('Developed by:', 255)
-        self.add_label('Savelev Yakov', 150)
-        self.add_label('YakovSava', 150)
-        self.add_label('Jacob Savelev', 150)
-        self.add_label('Denis Ponomarev', 150)
+        self.add_title('Credits', 540)
+        self.add_label('Developed by:', 510)
+        self.add_label('Savelev Yakov', 490)
+        self.add_label('YakovSava', 470)
+        self.add_label('Jacob Savelev', 450)
+        self.add_label('Denis Ponomarev', 430)
 
-        self.add_title('Special thanks:', 250)
-        self.add_label('AtiByte', 150)
-        self.add_label('Nastya Sergienko', 150)
-        self.add_label('Igor Gygabyte', 150)
-        self.add_label('Ryan Gosling', 150)
-        self.add_label('JSON Stathem', 150)
-        self.add_label('Iosif Stalin', 150)
-        self.add_label('Pablo Escobar', 150)
-        self.add_label('Kurt Cobein', 150)
-        self.add_label('Mark Solarezzof', 150)
-        self.add_label('Misha Fifanov', 150)
-        self.add_label('Georgy Vorob\'ov', 150)
-        self.add_label('Kirill Chornyi', 150)
-        self.add_label('Pastuhova Nadezhda', 150)
-        self.add_label('Maksim Sidorov', 150)
+        self.add_title('Special thanks:', 400)
+        self.add_label('AtiByte', 360)
+        self.add_label('Nastya Sergienko', 340)
+        self.add_label('Igor Gygabyte', 320)
+        self.add_label('Ryan Gosling', 300)
+        self.add_label('JSON Stathem', 280)
+        self.add_label('Iosif Stalin', 260)
+        self.add_label('Pablo Escobar', 240)
+        self.add_label('Kurt Cobein', 220)
+        self.add_label('Mark Solarezzof', 200)
+        self.add_label('Misha Fifanov', 180)
+        self.add_label('Georgy Vorob\'ov', 160)
+        self.add_label('Kirill Chornyi', 140)
+        self.add_label('Pastuhova Nadezhda', 120)
+        self.add_label('Maksim Sidorov', 100)
 
     def add_title(self, title, y) -> None:
         self.add(Label(
             text=title,
             font_name='Arial',
-            font_size=48,
+            font_size=24,
             color=(0, 0, 0, 255),
             anchor_x='center',
             anchor_y='center',
@@ -130,9 +131,14 @@ class DirectedByRobertVeide(ColorLayer):
         self.add(Label(
             text=text,
             font_name='Arial',
-            font_size=24,
+            font_size=12,
             color=(0, 0, 0, 255),
             anchor_x='center',
             anchor_y='center',
             position=(director.get_window_size()[0] / 2, y)
         ))
+
+# npc_layers = [
+#     NPC()
+#     for _ in range(4)
+# ]

@@ -3,17 +3,18 @@ from cocos.mapcolliders import TmxObjectMapCollider, make_collision_handler
 from cocos.director import director
 from cocos.scene import Scene
 from cocos.layer import ScrollingManager
-from plugins.sprites import npc_layer, MainHeroSprite, DirectedByRobertVeide
+from plugins.sprites import MainHeroSprite, DirectedByRobertVeide
 from plugins.background import BackgroundLayer, Button
 from plugins.sprites import keyboard
 
 class MainMenu(Menu):
+    _handlers_enabled = False
 
     def __init__(self):
         super().__init__("Game name")
 
         items = [
-            MenuItem(message)
+            MenuItem(message, action)
             for message, action in [
                 ['New game', self.new_game],
                 ['Developers', self.developers],
@@ -37,8 +38,8 @@ class MainMenu(Menu):
 
         mh = MainHeroSprite(scroller, collision_handler)
 
-        for layer in npc_layer:
-            scroller.add(layer)
+        # for layer in npc_layer:
+        #     scroller.add(layer)
 
         for layer in (background.layers):
             scroller.add(layer)
