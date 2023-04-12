@@ -1,5 +1,7 @@
 from os.path import exists
 from base64 import b64encode, b64decode
+from cocos.layer import Layer
+from cocos.sprite import Sprite
 
 def _encode(string:str) -> str:
     return b64encode(bytes(string, 'utf-8')).decode('utf-8')
