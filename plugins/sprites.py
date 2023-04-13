@@ -31,8 +31,8 @@ class Mover(Move):
         self.target.position = new.center
         self.scroller.set_focus(*new.center)
 
-
-
+        if self.target.position == (76, 20):
+            self.target.on_enter()
 
 
 class MainHeroSprite(ScrollableLayer):
@@ -43,7 +43,7 @@ class MainHeroSprite(ScrollableLayer):
         super().__init__()
         self.spr = Sprite('source/gg.png')
 
-        self.spr.position = 400, 360
+        self.spr.position = 79, 616
         self.spr.velocity = 0, 0
 
         mover = Mover()
@@ -58,7 +58,7 @@ class MainHeroSprite(ScrollableLayer):
         self.sprite_action = MoveTo((0, 0), duration=5)
 
     def main_hero_click(self, x ,y) -> bool:
-        return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.weight) and (y > self.spr.y)
+        return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.width) and (y > self.spr.y)
 
     def on_enter(self) -> None:
         super().on_enter()

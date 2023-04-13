@@ -41,6 +41,8 @@ class MainMenu(Menu):
         # for layer in npc_layer:
         #     scroller.add(layer)
 
+
+
         for layer in (background.layers):
             scroller.add(layer)
         scroller.add(mh)
@@ -58,8 +60,8 @@ class MainMenu(Menu):
 
 if __name__ == "__main__":
     director.init(
-        width=1280,
-        height=720,
+        width=960,
+        height=640,
         caption="Game name"
     )
     menu = MainMenu()
