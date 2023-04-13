@@ -3,7 +3,7 @@ from random import choice
 from typing import Callable
 from pyglet.window import key, mouse
 from cocos.director import director
-from cocos.layer import Layer, ColorLayer
+from cocos.layer import Layer, ColorLayer, ScrollableLayer
 from cocos.text import Label
 from cocos.sprite import Sprite
 from cocos.actions import Move, MoveTo
@@ -15,8 +15,8 @@ class Mover(Move):
 
     def step(self, dt):
         super().step(dt)
-        vel_x = (keyboard[key.RIGHT] - keyboard[key.LEFT]) * 500
-        vel_y = (keyboard[key.UP] - keyboard[key.DOWN]) * 500
+        vel_x = (keyboard[key.RIGHT] - keyboard[key.LEFT]) * 5
+        vel_y = (keyboard[key.UP] - keyboard[key.DOWN]) * 5
 
         dx, dy = vel_x + dt, vel_y + dt
 
@@ -35,7 +35,7 @@ class Mover(Move):
 
 
 
-class MainHeroSprite(Layer):
+class MainHeroSprite(ScrollableLayer):
 
     is_event_handler = True
 
@@ -65,6 +65,7 @@ class MainHeroSprite(Layer):
         self.do(self.sprite_action)
 
     def on_mouse_press(self, x, y, button, modifier):
+        print(x, y)
         if button & mouse.LEFT:
             if self.main_hero_click(x, y):
                 pass # Open inventory

@@ -43,6 +43,8 @@ class MainMenu(Menu):
 
         for layer in (background.layers):
             scroller.add(layer)
+        scroller.add(mh)
+        scroller.add(background.colliders)
 
         scene = Scene()
         scene.add(scroller)
