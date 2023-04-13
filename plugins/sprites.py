@@ -8,8 +8,15 @@ from cocos.text import Label
 from cocos.sprite import Sprite
 from cocos.actions import Move, MoveTo
 from cocos.layer import ScrollingManager
+from plugins.inventory import Inventory
 
 keyboard = key.KeyStateHandler()
+
+def _all(iterable) -> bool:
+    logic = False
+    for l in iterable:
+        logic = logic and l
+    return logic
 
 class Mover(Move):
 
@@ -31,9 +38,16 @@ class Mover(Move):
         self.target.position = new.center
         self.scroller.set_focus(*new.center)
 
-        if self.target.position == (76, 20):
-            self.target.on_enter()
+        x, y = list(map(lambda x: int(round(x, 0)), self.target.position))
 
+        if (x in range(55, 104)) and (y in range(0, 16)):
+            self.target.teleport_to_location()
+
+
+class _MainHeroSprite(Sprite):
+
+    def teleport_to_location(self) -> None:
+        print('Teleport!')
 
 class MainHeroSprite(ScrollableLayer):
 
@@ -41,7 +55,7 @@ class MainHeroSprite(ScrollableLayer):
 
     def __init__(self, scroller:ScrollingManager, collision_handler:Callable):
         super().__init__()
-        self.spr = Sprite('source/gg.png')
+        self.spr = _MainHeroSprite('source/gg.png')
 
         self.spr.position = 79, 616
         self.spr.velocity = 0, 0
@@ -57,18 +71,20 @@ class MainHeroSprite(ScrollableLayer):
 
         self.sprite_action = MoveTo((0, 0), duration=5)
 
+        self.inventory = False
+
     def main_hero_click(self, x ,y) -> bool:
         return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.width) and (y > self.spr.y)
-
-    def on_enter(self) -> None:
-        super().on_enter()
-        self.do(self.sprite_action)
 
     def on_mouse_press(self, x, y, button, modifier):
         print(x, y)
         if button & mouse.LEFT:
             if self.main_hero_click(x, y):
-                pass # Open inventory
+                if not self.inventory:
+                    self.inv = Inventory()
+                    self.add(self.inv)
+        if hasattr(self, 'inv'):
+            self.remove_action(self.inv)
 
 class NPC(Layer):
     def __init__(self):
@@ -81,7 +97,7 @@ class NPC(Layer):
         self.add(self.spr)
 
     def npc_click(self, x ,y) -> bool:
-        return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.weight) and (y > self.spr.y)
+        return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y - 4 < self.spr.y + self.spr.weight) and (y - 4 > self.spr.y)
 
     def on_mouse_press(self, x, y, button, modifier):
         if button & mouse.LEFT:
