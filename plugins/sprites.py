@@ -1,4 +1,5 @@
 from os import listdir
+from time import sleep
 from random import choice
 from typing import Callable
 from pyglet.window import key, mouse
@@ -71,7 +72,9 @@ class MainHeroSprite(ScrollableLayer):
 
         self.sprite_action = MoveTo((0, 0), duration=5)
 
-        self.inventory = False
+        self.inv = Inventory()
+        self.inv.visible = False
+        self.add(self.inv)
 
     def main_hero_click(self, x ,y) -> bool:
         return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.width) and (y > self.spr.y)
@@ -80,11 +83,11 @@ class MainHeroSprite(ScrollableLayer):
         print(x, y)
         if button & mouse.LEFT:
             if self.main_hero_click(x, y):
-                if not self.inventory:
-                    self.inv = Inventory()
-                    self.add(self.inv)
-        if hasattr(self, 'inv'):
-            self.remove_action(self.inv)
+                if not self.inv.visible:
+                    self.inv.visible = True
+        if button & mouse.RIGHT:
+            if self.inv.visible:
+                self.inv.visible = False
 
 class NPC(Layer):
     def __init__(self):
