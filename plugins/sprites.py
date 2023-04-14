@@ -3,10 +3,10 @@ from random import choice, randint
 from typing import Callable
 from pyglet.window import key, mouse
 from cocos.director import director
-from cocos.layer import Layer, ColorLayer, ScrollableLayer
+from cocos.layer import ColorLayer, ScrollableLayer
 from cocos.text import Label
 from cocos.sprite import Sprite
-from cocos.actions import Move, MoveTo
+from cocos.actions import Move
 from cocos.layer import ScrollingManager
 from plugins.inventory import Inventory
 
@@ -19,6 +19,10 @@ def _all(iterable) -> bool:
     return logic
 
 class Mover(Move):
+
+    def __init__(self, t):
+        super().__init__()
+        self.t = t
 
     def step(self, dt):
         super().step(dt)
@@ -41,26 +45,26 @@ class Mover(Move):
         x, y = list(map(lambda x: int(round(x, 0)), self.target.position))
 
         if (x in range(55, 104)) and (y in range(0, 16)):
-            self.target.teleport_to_location()
+            self.target.teleport_to_location(self.t)
 
 
 class _MainHeroSprite(Sprite):
 
-    def teleport_to_location(self) -> None:
-        print('Teleport!')
+    def teleport_to_location(self, t, *args) -> None:
+        director.run(t(*args))
 
 class MainHeroSprite(ScrollableLayer):
 
     is_event_handler = True
 
-    def __init__(self, scroller:ScrollingManager, collision_handler:Callable):
+    def __init__(self, scroller:ScrollingManager, collision_handler:Callable, t, *args):
         super().__init__()
         self.spr = _MainHeroSprite('source/gg.png')
 
         self.spr.position = 79, 616
         self.spr.velocity = 0, 0
 
-        mover = Mover()
+        mover = Mover(t, *args)
         mover.scroller = scroller
 
         self.spr.collide_map = collision_handler
@@ -69,13 +73,11 @@ class MainHeroSprite(ScrollableLayer):
 
         self.add(self.spr)
 
-        self.sprite_action = MoveTo((0, 0), duration=5)
-
         self.inv = Inventory()
         self.inv.visible = False
         self.add(self.inv)
 
-    def main_hero_click(self, x ,y) -> bool:
+    def main_hero_click(self, x, y) -> bool:
         return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.width) and (y > self.spr.y)
 
     def on_mouse_press(self, x, y, button, modifier):
@@ -89,17 +91,21 @@ class MainHeroSprite(ScrollableLayer):
             if self.inv.visible:
                 self.inv.visible = False
 
-class NPC(Layer):
+class NPC(ScrollableLayer):
+    is_event_handler = True
+
     def __init__(self):
         super().__init__()
         self.spr = Sprite('source/npc/'+choice(listdir('source/npc/')))
 
-        self.spr.position = randint(120, 840), randint(230, 520)
+        self.spr.position = randint(230, 520), randint(120, 840)
         self.spr.velocity = 0, 0
+
+        self.spr.visible = True
 
         self.add(self.spr)
 
-    def npc_click(self, x ,y) -> bool:
+    def npc_click(self, x, y) -> bool:
         return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y - 4 < self.spr.y + self.spr.weight) and (y - 4 > self.spr.y)
 
     def on_mouse_press(self, x, y, button, modifier):
@@ -110,7 +116,7 @@ class NPC(Layer):
 class DirectedByRobertVeide(ColorLayer):
     _handlers_enabled = False
 
-    def __init__(self, menu, director):
+    def __init__(self):
         super().__init__(*[255 for _ in range(4)])
 
         self.add_title('Credits', 540)
@@ -136,9 +142,6 @@ class DirectedByRobertVeide(ColorLayer):
         self.add_label('Pastuhova Nadezhda', 120)
         self.add_label('Maksim Sidorov', 100)
 
-        self.menu = menu
-        self.direct = director
-
     def add_title(self, title, y) -> None:
         self.add(Label(
             text=title,
@@ -160,9 +163,6 @@ class DirectedByRobertVeide(ColorLayer):
             anchor_y='center',
             position=(director.get_window_size()[0] / 2, y)
         ))
-
-    def on_mouse_click(self, *args) -> None:
-        self.director.run(self.menu)
 
 npc_layers = [
     NPC()

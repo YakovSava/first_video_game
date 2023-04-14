@@ -36,7 +36,7 @@ class MainMenu(Menu):
 
         scroller = ScrollingManager()
 
-        mh = MainHeroSprite(scroller, collision_handler)
+        mh = MainHeroSprite(scroller, collision_handler, DirectedByRobertVeide)
 
         for layer in npc_layers:
             scroller.add(layer)
@@ -53,16 +53,18 @@ class MainMenu(Menu):
         director.run(scene)
 
     def developers(self) -> None:
-        title = DirectedByRobertVeide(menu, director)
+        title = DirectedByRobertVeide()
 
         director.run(title)
 
 if __name__ == "__main__":
-    director.init(
+    w = director.init(
         width=960,
         height=640,
-        caption="Game name"
+        caption="Game name",
+        autoscale=True
     )
+    director.window = w
     menu = MainMenu()
 
     director.run(menu)
