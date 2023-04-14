@@ -14,8 +14,8 @@ class Saver:
     Save object (JSON):
     {
         'location': 0,
-        'inventory': 'inventory_filename.list',
-        'quests': 'quests_filename.list'
+        'inventory': ['beer', 'beer', 'beer'],
+        'quests': ['quest 1', 'quest 2', 'quest 3']
     }
     '''
 

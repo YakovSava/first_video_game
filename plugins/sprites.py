@@ -1,6 +1,5 @@
 from os import listdir
-from time import sleep
-from random import choice
+from random import choice, randint
 from typing import Callable
 from pyglet.window import key, mouse
 from cocos.director import director
@@ -84,6 +83,7 @@ class MainHeroSprite(ScrollableLayer):
         if button & mouse.LEFT:
             if self.main_hero_click(x, y):
                 if not self.inv.visible:
+                    self.inv.change()
                     self.inv.visible = True
         if button & mouse.RIGHT:
             if self.inv.visible:
@@ -92,9 +92,9 @@ class MainHeroSprite(ScrollableLayer):
 class NPC(Layer):
     def __init__(self):
         super().__init__()
-        self.spr = Sprite(choice(listdir('source/npc/')))
+        self.spr = Sprite('source/npc/'+choice(listdir('source/npc/')))
 
-        self.spr.position = 400, 360
+        self.spr.position = randint(120, 840), randint(230, 520)
         self.spr.velocity = 0, 0
 
         self.add(self.spr)
@@ -110,7 +110,7 @@ class NPC(Layer):
 class DirectedByRobertVeide(ColorLayer):
     _handlers_enabled = False
 
-    def __init__(self):
+    def __init__(self, menu, director):
         super().__init__(*[255 for _ in range(4)])
 
         self.add_title('Credits', 540)
@@ -136,6 +136,9 @@ class DirectedByRobertVeide(ColorLayer):
         self.add_label('Pastuhova Nadezhda', 120)
         self.add_label('Maksim Sidorov', 100)
 
+        self.menu = menu
+        self.direct = director
+
     def add_title(self, title, y) -> None:
         self.add(Label(
             text=title,
@@ -158,7 +161,10 @@ class DirectedByRobertVeide(ColorLayer):
             position=(director.get_window_size()[0] / 2, y)
         ))
 
-# npc_layers = [
-#     NPC()
-#     for _ in range(4)
-# ]
+    def on_mouse_click(self, *args) -> None:
+        self.director.run(self.menu)
+
+npc_layers = [
+    NPC()
+    for _ in range(4)
+]
