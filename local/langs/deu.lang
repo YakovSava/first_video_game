@@ -4,7 +4,24 @@ new_game = "Neues Spiel"
 devs = "Titel"
 langs = "Sprachen"
 exit = "Beenden"
-phrazes = []
+phrazes = [
+    "Es ist Zeit, dass wir pflanzen...",
+    "Gruß",
+    "Hallo junger Mann",
+    "Ich denke, die Bar sollte nicht geschlossen werden...",
+    "Ich denke, die Bar sollte geschlossen werden.",
+    "Wir könnten einen großen Weg durch den Wald gebrauchen.",
+    "Ich will nicht arbeiten...",
+    "Wenn ich ein Kind habe, werde ich es meiner Großmutter übergeben",
+    "Es lohnt sich, Ihre Gedanken aufzuschreiben...",
+    "Es ist hier im Frühling schön!",
+    "Es scheint, dass jemand etwas versteckt...",
+    "Ich habe einen großen Fisch im Teich gesehen! Auf der anderen Seite des Sees muss versucht werden, sie zu fangen!",
+    "Lieber ein Auto kaufen",
+    "*Unleserliches Murmeln*",
+    "*Leerer Blick*",
+    "Ach..."
+]
 credits = "Titel:"
 devs_devs = "Entwickler"
 sy = "Savelyev Yakov"

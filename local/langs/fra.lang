@@ -4,7 +4,24 @@ new_game = "Nouveau jeu"
 devs = "Titres"
 langs = "Langues"
 exit = "Exit"
-phrazes = []
+phrazes = [
+    "Il est temps de faire des atterrissages...",
+    "Salut",
+    "Bonjour jeune homme",
+    "Je pense que le bar ne devrait pas fermer...",
+    "Je pense que le bar devrait fermer.",
+    "Nous aurions besoin d'une grande route à travers la forêt",
+    "Je ne veux pas travailler...",
+    "Si j'ai un bébé, je le donnerai à ma grand-mère.",
+    "Cela vaut la peine d'écrire vos pensées...",
+    "C'est beau au printemps!",
+    "Il semble que quelqu'un cache quelque chose...",
+    "J'ai vu un gros poisson dans l'étang! De l'autre côté du lac, on doit essayer de l'attraper!",
+    "Plutôt acheter une voiture",
+    "*Murmure illisible*",
+    "*Regard vide*",
+    "Ah..."
+]
 credits = " Crédits:"
 devs_devs = "Développeurs"
 sy = "Saveliev Yakov"
