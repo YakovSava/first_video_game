@@ -4,25 +4,48 @@ from cocos.director import director
 from cocos.scene import Scene
 from cocos.layer import ScrollingManager
 from plugins.sprites import MainHeroSprite, DirectedByRobertVeide, npc_layers
-from plugins.background import BackgroundLayer
+from plugins.background import BackgroundLayer, BackgroundMenulayer
 from plugins.sprites import keyboard
+from local import get, get_all_langs, set_lang
+
+lang = get()
+
+class LangMenu(Menu):
+    _handlers_enabled = False
+
+    def __init__(self):
+        super().__init__(lang['game_name_langs'])
+
+        items = [
+            MenuItem(message, self.set_lang, message)
+            for message in (get_all_langs())
+        ]
+        self.create_menu(items, shake(), shake_back())
+
+    def set_lang(self, lang:str) -> None:
+        set_lang(lang)
+        director.window.close()
 
 class MainMenu(Menu):
     _handlers_enabled = False
 
     def __init__(self):
-        super().__init__("Game name")
+        super().__init__(lang['game_name'])
 
         items = [
             MenuItem(message, action)
             for message, action in [
-                ['New game', self.new_game],
-                ['Developers', self.developers],
-                ['Exit', director.window.close]
+                [lang['new_game'], self.new_game],
+                [lang['devs'], self.developers],
+                [lang['langs'], self.change_lang],
+                [lang['exit'], director.window.close]
             ]
         ]
-
         self.create_menu(items, shake(), shake_back())
+
+        # mmbg = BackgroundMenulayer()
+        # mmbg.position = tuple(map(lambda x: x / 2, director.get_window_size()))
+        # self.add(mmbg)
 
     def new_game(self) -> None:
         director.window.pop_handlers()
@@ -52,6 +75,11 @@ class MainMenu(Menu):
 
         director.run(scene)
 
+    def change_lang(self) -> None:
+        lang_menu = LangMenu()
+
+        director.run(lang_menu)
+
     def developers(self) -> None:
         title = DirectedByRobertVeide()
 
@@ -61,7 +89,7 @@ if __name__ == "__main__":
     w = director.init(
         width=960,
         height=640,
-        caption="Game name"
+        caption=lang['game_name']
     )
     director.window = w
     menu = MainMenu()

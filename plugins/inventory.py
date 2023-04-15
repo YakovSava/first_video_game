@@ -64,4 +64,5 @@ class Inventory(ColorLayer):
             file.write(_encode(str(_list)))
 
     def change(self) -> None:
+        print(_perfecto(self._read_inv(), self._read_quests()))
         self.label.element.text = _perfecto(self._read_inv(), self._read_quests())

@@ -1,24 +1,6 @@
-from cocos.layer import ScrollableLayer, Layer
-from cocos.sprite import Sprite
+from cocos.layer import ScrollableLayer
 from cocos.tiles import load
-from cocos.menu import Menu, MenuItem
-from plugins.inventory import Inventory
-
-class Button(Layer):
-
-    def __init__(self):
-        super().__init__()
-        button_image = Sprite('source/freemasonry.png')
-        button = MenuItem('Notebook', self.on_button_click)
-        menu = Menu(button)
-        menu.position = button_image.width // 2, button_image.height // 2
-
-        self.add(button_image)
-        self.add(menu)
-
-    def on_button_click(self) -> None:
-        inv = Inventory()
-        self.add(inv)
+from cocos.sprite import Sprite
 
 class BackgroundLayer(ScrollableLayer):
 
@@ -30,4 +12,11 @@ class BackgroundLayer(ScrollableLayer):
         self.colliders = background['collide']
 
         self.add(background)
-        self.add(Button())
+
+class BackgroundMenulayer(ScrollableLayer):
+    def __init__(self):
+        super().__init__()
+        self.add(Sprite('source/map.png'))
+
+    def is_inside_box(self, *args) -> bool:
+        return False
