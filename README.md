@@ -14,7 +14,8 @@ This is the first video game I wrote in the genre of "bring it, give it, leave i
 - Installer: ISS (Inno Setup Script)  
 - Support for operating systems:
 ---------------------------------
-| Linux | Windows 7-11 | Mac OS <br>
+| Linux | Windows 7-11 | Mac OS
+---------------------------------
 | ✓ | ✓ | ✕
 ---------------------------------
 

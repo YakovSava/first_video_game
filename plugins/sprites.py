@@ -28,7 +28,6 @@ class DialogMenu(ScrollableLayer):
             anchor_y='center',
             position=(x-4, y+23)
         )
-        self.label.element.text = choice(lang['phrazes'])
         self.add(self.label)
         t = Timer(3, self.change_visibility)
         t.start()
@@ -191,7 +190,77 @@ class NPC(ScrollableLayer):
                     self.dialog = DialogMenu(x, y)
                     self.add(self.dialog)
 
+class NPCQuest(ScrollableLayer):
+    is_event_handler = True
+
+    class DialogMenu(ScrollableLayer):
+
+        def __init__(self, x: int, y: int, main_hero:MainHeroSprite):
+            super().__init__()
+            self.quest = choice(lang['quests'])
+            self.replica = True
+            self.label = Label(
+                text=self.quest[1].pop(0),
+                font_size=14,
+                color=(0, 0, 0, 255),
+                anchor_x='center',
+                anchor_y='center',
+                position=(x - 4, y + 23)
+            )
+            self.mh = main_hero
+            self.add(self.label)
+
+        def change_visibility(self) -> None:
+            self.label.visible = False
+            self.visible = False
+
+        def _step_replica(self, msg:str) -> None:
+            self.label.element.text = msg
+
+        def step(self, x, y) -> None:
+            if self.replica:
+                counter = 3
+                for quest in self.quest[1]:
+                    t = Timer(counter, self._step_replica, args=(quest,))
+                    t.start()
+                    counter += 3
+                self.replica = False
+                t = Timer(counter+3, self.change_visibility)
+                t.start()
+            else:
+                self.label.element.text = 'Ты мне поможешь?'
+
+
+    def __init__(self, mh:MainHeroSprite):
+        super().__init__()
+
+        self.spr = Sprite(f'source/npc/{choice(listdir("source/npc/"))}')
+        self.spr.position = randint(230, 520), randint(120, 840)
+
+        self.mh = mh
+
+        self.add(self.spr)
+
+    def npc_click(self, x, y) -> bool:
+        return bool((x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.width) and (
+                    y > self.spr.y))
+    def on_mouse_press(self, x, y, button, modifier):
+        if button & mouse.LEFT:
+            if self.npc_click(x, y):
+                if hasattr(self, 'dialog'):
+                    if not hasattr(self, '_step'):
+                        self.dialog.step(x, y)
+                        self._step = None
+                else:
+                    self.dialog = self.DialogMenu(x, y, self.mh)
+                    self.add(self.dialog)
+
 npc_layers = [
     NPC()
-    for _ in range(4)
+    for _ in range(6)
+]
+
+quest_npcs = [
+    NPCQuest
+    for _ in range(2)
 ]

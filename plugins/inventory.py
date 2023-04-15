@@ -28,10 +28,10 @@ class Inventory(ColorLayer):
         super().__init__(255, 255, 255, 150, width=640, height=480)
         if not exists('inventory.list'):
             with open('inventory.list', 'w', encoding='utf-8') as inventory:
-                inventory.write(_encode(str(['null' for _ in range(5)])))
+                inventory.write(_encode('[]'))
         if not exists('quests.list'):
             with open('quests.list', 'w', encoding='utf-8') as file:
-                file.write(_encode(str(['null' for _ in range(5)])))
+                file.write(_encode('[]'))
         image = Sprite('source/notebook.jpg')
         image.position = self.width / 2, self.height / 2
         self.add(image)
@@ -66,3 +66,23 @@ class Inventory(ColorLayer):
     def change(self) -> None:
         print(_perfecto(self._read_inv(), self._read_quests()))
         self.label.element.text = _perfecto(self._read_inv(), self._read_quests())
+
+    def add_quest(self, quest_title:str) -> None:
+        _list = self._read_quests()
+        _list.append(quest_title)
+        self._write_quests(_list)
+
+    def delete_quest(self, quest_name:str) -> None:
+        _list = self._read_quests()
+        _list.remove(quest_name)
+        self._write_quests(_list)
+
+    def add_item(self, item_name:str) -> None:
+        _list = self._read_inv()
+        _list.append(item_name)
+        self._write_inv(_list)
+
+    def delete_item(self, item_name: str) -> None:
+        _list = self._read_inv()
+        _list.remove(item_name)
+        self._write_inv(_list)
