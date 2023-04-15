@@ -3,8 +3,8 @@ from cocos.mapcolliders import TmxObjectMapCollider, make_collision_handler
 from cocos.director import director
 from cocos.scene import Scene
 from cocos.layer import ScrollingManager
-from plugins.sprites import npc_layers, MainHeroSprite, DirectedByRobertVeide
-from plugins.background import BackgroundLayer, Button
+from plugins.sprites import MainHeroSprite, DirectedByRobertVeide, npc_layers
+from plugins.background import BackgroundLayer
 from plugins.sprites import keyboard
 
 class MainMenu(Menu):
@@ -37,17 +37,17 @@ class MainMenu(Menu):
         scroller = ScrollingManager()
 
         mh = MainHeroSprite(scroller, collision_handler, DirectedByRobertVeide)
+        scene = Scene()
 
-        for layer in npc_layers:
-            scroller.add(layer)
 
         for layer in (background.layers):
             scroller.add(layer)
 
-        scroller.add(mh)
-        scroller.add(background.colliders)
+        for layer in npc_layers:
+            scroller.add(layer)
 
-        scene = Scene()
+        scroller.add(mh)
+
         scene.add(scroller)
 
         director.run(scene)
@@ -61,8 +61,7 @@ if __name__ == "__main__":
     w = director.init(
         width=960,
         height=640,
-        caption="Game name",
-        autoscale=True
+        caption="Game name"
     )
     director.window = w
     menu = MainMenu()

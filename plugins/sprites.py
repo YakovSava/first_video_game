@@ -3,7 +3,7 @@ from random import choice, randint
 from typing import Callable
 from pyglet.window import key, mouse
 from cocos.director import director
-from cocos.layer import ColorLayer, ScrollableLayer
+from cocos.layer import ColorLayer, ScrollableLayer, Layer
 from cocos.text import Label
 from cocos.sprite import Sprite
 from cocos.actions import Move
@@ -91,28 +91,6 @@ class MainHeroSprite(ScrollableLayer):
             if self.inv.visible:
                 self.inv.visible = False
 
-class NPC(ScrollableLayer):
-    is_event_handler = True
-
-    def __init__(self):
-        super().__init__()
-        self.spr = Sprite('source/npc/'+choice(listdir('source/npc/')))
-
-        self.spr.position = randint(230, 520), randint(120, 840)
-        self.spr.velocity = 0, 0
-
-        self.spr.visible = True
-
-        self.add(self.spr)
-
-    def npc_click(self, x, y) -> bool:
-        return (x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y - 4 < self.spr.y + self.spr.weight) and (y - 4 > self.spr.y)
-
-    def on_mouse_press(self, x, y, button, modifier):
-        if button & mouse.LEFT:
-            if self.npc_click(x, y):
-                print('NPC click!')
-
 class DirectedByRobertVeide(ColorLayer):
     _handlers_enabled = False
 
@@ -163,6 +141,25 @@ class DirectedByRobertVeide(ColorLayer):
             anchor_y='center',
             position=(director.get_window_size()[0] / 2, y)
         ))
+
+class NPC(ScrollableLayer):
+    is_event_handler = True
+
+    def __init__(self):
+        super().__init__()
+
+        self.spr = Sprite(f'source/npc/{choice(listdir("source/npc/"))}')
+        self.spr.position = randint(230, 520), randint(120, 840)
+
+        self.add(self.spr)
+
+    def npc_click(self, x, y) -> bool:
+        return bool((x < self.spr.x + self.spr.width) and (x > self.spr.x) and (y < self.spr.y + self.spr.width) and (
+                    y > self.spr.y))
+    def on_mouse_press(self, x, y, button, modifier):
+        if button & mouse.LEFT:
+            if self.npc_click(x, y):
+                print('NPC click!')
 
 npc_layers = [
     NPC()
