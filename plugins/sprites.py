@@ -196,11 +196,12 @@ class NPCQuest(ScrollableLayer):
     class DialogMenu(ScrollableLayer):
 
         def __init__(self, x: int, y: int, main_hero:MainHeroSprite):
-            super().__init__()
+            super().__init__(parallax=1)
             self.quest = choice(lang['quests'])
+            self.quest_complete = False
             self.replica = True
             self.label = Label(
-                text=self.quest[1].pop(0),
+                text=self.quest[2],
                 font_size=14,
                 color=(0, 0, 0, 255),
                 anchor_x='center',
@@ -220,7 +221,7 @@ class NPCQuest(ScrollableLayer):
         def step(self, x, y) -> None:
             if self.replica:
                 counter = 3
-                for quest in self.quest[1]:
+                for quest in self.quest[2]:
                     t = Timer(counter, self._step_replica, args=(quest,))
                     t.start()
                     counter += 3
@@ -228,7 +229,15 @@ class NPCQuest(ScrollableLayer):
                 t = Timer(counter+3, self.change_visibility)
                 t.start()
             else:
-                self.label.element.text = 'Ты мне поможешь?'
+                if self.quest_complete:
+                    self.label.element.text = 'Спасибо ещё раз!'
+                else:
+                    if self.quest[1] in self.mh.inv._read_inv():
+                        self.label.element.text = 'Спасибо что помог! Я как раз это и искал!'
+                    else:
+                        self.label.element.text = 'Ты мне поможешь?'
+                t = Timer(3, self.change_visibility)
+                t.start()
 
 
     def __init__(self, mh:MainHeroSprite):

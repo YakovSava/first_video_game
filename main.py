@@ -3,7 +3,7 @@ from cocos.mapcolliders import TmxObjectMapCollider, make_collision_handler
 from cocos.director import director
 from cocos.scene import Scene
 from cocos.layer import ScrollingManager
-from plugins.sprites import MainHeroSprite, DirectedByRobertVeide, npc_layers
+from plugins.sprites import MainHeroSprite, DirectedByRobertVeide, npc_layers, quest_npcs
 from plugins.background import BackgroundLayer, BackgroundMenulayer
 from plugins.sprites import keyboard
 from local import get, get_all_langs, set_lang
@@ -68,6 +68,9 @@ class MainMenu(Menu):
 
         for layer in npc_layers:
             scroller.add(layer)
+
+        for layer in quest_npcs:
+            scroller.add(layer(mh))
 
         scroller.add(mh)
 
