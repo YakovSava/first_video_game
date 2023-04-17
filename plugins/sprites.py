@@ -1,7 +1,9 @@
 from os import listdir
+from time import sleep
 from threading import Timer
+from tkinter.messagebox import showinfo
 from random import choice, randint
-from typing import Callable
+from typing import Callable, Iterator
 from pyglet.window import key, mouse
 from cocos.director import director
 from cocos.layer import ColorLayer, ScrollableLayer
@@ -16,6 +18,10 @@ lang = get()
 
 keyboard = key.KeyStateHandler()
 
+def _timer(interval:int, function:Callable, args:tuple=tuple(), kwargs:dict={}) -> None:
+
+    Timer(interval, function, args=args, kwargs=kwargs)
+
 class DialogMenu(ScrollableLayer):
 
     def __init__(self, x:int, y:int):
@@ -29,8 +35,7 @@ class DialogMenu(ScrollableLayer):
             position=(x-4, y+23)
         )
         self.add(self.label)
-        t = Timer(3, self.change_visibility)
-        t.start()
+        t = _timer(3, self.change_visibility)
 
     def change_visibility(self) -> None:
         self.label.visible = False
@@ -40,8 +45,7 @@ class DialogMenu(ScrollableLayer):
         self.label.element.text = choice(lang['phrazes'])
         self.label.visible = True
         self.visible = True
-        t = Timer(3, self.change_visibility)
-        t.start()
+        t = _timer(3, self.change_visibility)
 
 class Mover(Move):
 
@@ -145,6 +149,8 @@ class DirectedByRobertVeide(ColorLayer):
         self.add_label(lang['pon'], 120)
         self.add_label(lang['ms'], 100)
 
+        showinfo(lang['game_name'], lang['thanks'])
+
     def add_title(self, title, y) -> None:
         self.add(Label(
             text=title,
@@ -201,7 +207,7 @@ class NPCQuest(ScrollableLayer):
             self.quest_complete = False
             self.replica = True
             self.label = Label(
-                text=self.quest[2],
+                text=self.quest['dialog'][0],
                 font_size=14,
                 color=(0, 0, 0, 255),
                 anchor_x='center',
@@ -211,33 +217,27 @@ class NPCQuest(ScrollableLayer):
             self.mh = main_hero
             self.add(self.label)
 
+        def _iterator(self) -> Iterator:
+            for quest in self.quest['dialog'][1:]:
+                yield quest
+
+        def step(self) -> None:
+            if self.replica:
+                for text in self._iterator():
+                    setattr(self.label.element, 'text', text)
+                    sleep(2)
+                self.replica = False
+                _timer(3, self.change_visibility)
+            else:
+                if self.quest_complete:
+                    self.label.element.text = self.quest['thanks']
+                else:
+                    self.label.element.text = self.quest['help']
+                _timer(3, self.change_visibility)
+
         def change_visibility(self) -> None:
             self.label.visible = False
             self.visible = False
-
-        def _step_replica(self, msg:str) -> None:
-            self.label.element.text = msg
-
-        def step(self, x, y) -> None:
-            if self.replica:
-                counter = 3
-                for quest in self.quest[2]:
-                    t = Timer(counter, self._step_replica, args=(quest,))
-                    t.start()
-                    counter += 3
-                self.replica = False
-                t = Timer(counter+3, self.change_visibility)
-                t.start()
-            else:
-                if self.quest_complete:
-                    self.label.element.text = 'Спасибо ещё раз!'
-                else:
-                    if self.quest[1] in self.mh.inv._read_inv():
-                        self.label.element.text = 'Спасибо что помог! Я как раз это и искал!'
-                    else:
-                        self.label.element.text = 'Ты мне поможешь?'
-                t = Timer(3, self.change_visibility)
-                t.start()
 
 
     def __init__(self, mh:MainHeroSprite):
@@ -256,12 +256,9 @@ class NPCQuest(ScrollableLayer):
     def on_mouse_press(self, x, y, button, modifier):
         if button & mouse.LEFT:
             if self.npc_click(x, y):
-                if hasattr(self, 'dialog'):
-                    if not hasattr(self, '_step'):
-                        self.dialog.step(x, y)
-                        self._step = None
-                else:
+                if not hasattr(self, 'dialog'):
                     self.dialog = self.DialogMenu(x, y, self.mh)
+                    self.dialog.step()
                     self.add(self.dialog)
 
 npc_layers = [

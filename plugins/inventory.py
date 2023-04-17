@@ -3,7 +3,6 @@ from base64 import b64encode, b64decode
 from cocos.text import Label
 from cocos.layer import ColorLayer
 from cocos.sprite import Sprite
-from cocos.actions import FadeIn, FadeOut
 
 def _encode(string:str) -> str:
     return b64encode(bytes(string, 'utf-8')).decode('utf-8')
