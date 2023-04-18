@@ -1,0 +1,44 @@
+game_name = "Name des Spiels"
+game_name_langs = "Name des Spiels: Sprachen"
+new_game = "Neues Spiel"
+devs = "Titel"
+langs = "Sprachen"
+exit = "Beenden"
+phrazes = [
+    "Es ist Zeit, dass wir pflanzen...",
+    "Gruß",
+    "Hallo junger Mann",
+    "Ich denke, die Bar sollte nicht geschlossen werden...",
+    "Ich denke, die Bar sollte geschlossen werden.",
+    "Wir könnten einen großen Weg durch den Wald gebrauchen.",
+    "Ich will nicht arbeiten...",
+    "Wenn ich ein Kind habe, werde ich es meiner Großmutter übergeben",
+    "Es lohnt sich, Ihre Gedanken aufzuschreiben...",
+    "Es ist hier im Frühling schön!",
+    "Es scheint, dass jemand etwas versteckt...",
+    "Ich habe einen großen Fisch im Teich gesehen! Auf der anderen Seite des Sees muss versucht werden, sie zu fangen!",
+    "Lieber ein Auto kaufen",
+    "*Unleserliches Murmeln*",
+    "*Leerer Blick*",
+    "Ach..."
+]
+credits = "Titel:"
+devs_devs = "Entwickler"
+sy = "Savelyev Yakov"
+ys = "Jakob Sawa"
+js = "Jacob Saveliev"
+dp = "Denis Ponomarev"
+special = "Besonderer Dank geht an:"
+ns = "Anastasia Sergienko"
+ig = "Igor Gigabyte"
+rg = "Ryan Gosling"
+json_s = "Jason Statham"
+is = "Joseph Stalin"
+pe = "Pablo Escobar"
+kc = "Kurt Cobain"
+mark = "Mark ist Solar"
+misha = "Mikhail Fofanov"
+georgy = "Georgy Worobjow"
+kiril = "Kirill ist schwarz"
+pon = "Hirtenhoffnung"
+ms = "Maxim Sidorov"

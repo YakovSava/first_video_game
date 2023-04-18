@@ -1,0 +1,44 @@
+game_name = "Nom du jeu"
+game_name_langs = "nom du jeu: langues"
+new_game = "Nouveau jeu"
+devs = "Titres"
+langs = "Langues"
+exit = "Exit"
+phrazes = [
+    "Il est temps de faire des atterrissages...",
+    "Salut",
+    "Bonjour jeune homme",
+    "Je pense que le bar ne devrait pas fermer...",
+    "Je pense que le bar devrait fermer.",
+    "Nous aurions besoin d'une grande route à travers la forêt",
+    "Je ne veux pas travailler...",
+    "Si j'ai un bébé, je le donnerai à ma grand-mère.",
+    "Cela vaut la peine d'écrire vos pensées...",
+    "C'est beau au printemps!",
+    "Il semble que quelqu'un cache quelque chose...",
+    "J'ai vu un gros poisson dans l'étang! De l'autre côté du lac, on doit essayer de l'attraper!",
+    "Plutôt acheter une voiture",
+    "*Murmure illisible*",
+    "*Regard vide*",
+    "Ah..."
+]
+credits = " Crédits:"
+devs_devs = "Développeurs"
+sy = "Saveliev Yakov"
+ys = "Yakovsava"
+js = "Jacob Saveliev"
+dp = "Denis Ponomarev"
+special = " remerciements Spéciaux:"
+ns = "Anastasia Sergienko"
+ig = "Iglesias"
+rg = "Ryan Gosling"
+json_s = "Jason Stetham"
+is = "Joseph Staline"
+pe = "Pablo Escobar"
+kc = "Kurt Cobain"
+mark = "Marc Solarès"
+misha = "Mikhail Fifanov"
+georgy = "Georgy Vorobiev"
+kiril = "Cyril Noir"
+pon = "Bergerac"
+ms = "Maxim Sidorov"
